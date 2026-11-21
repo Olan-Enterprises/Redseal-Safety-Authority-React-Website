@@ -1,0 +1,35 @@
+@import "lenis/dist/lenis.css";
+@import "tailwindcss";
+
+:root {
+    --textShimmerRed: linear-gradient(to right, #f87171, #fca5a5, #ef4444, #dc2626, #ef4444, #f87171);
+}
+
+button {
+    cursor: pointer;
+}
+
+strong.shimmer-text-red,
+.shimmer-text-red {
+    background: var(--textShimmerRed);
+    -webkit-text-fill-color: transparent;
+    background-size: 300%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: 5s linear infinite text_gradient_animation;
+    display: inline-block;
+    padding-bottom: 0.2em;
+    margin-bottom: -0.2em;
+    padding-right: 0.08em;
+    padding-left: 0.04em;
+    vertical-align: baseline;
+}
+
+@keyframes text_gradient_animation {
+    0% {
+        background-position: 0%;
+    }
+    to {
+        background-position: 300%;
+    }
+}

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 245 80" fill="none">
+    <g transform="translate(12, 11)">
+        <path d="M27 3L50 11V29C50 43.5 40 53 27 57C14 53 4 43.5 4 29V11L27 3Z" fill="#B91C1C" fill-opacity="0.12" stroke="#B91C1C" stroke-width="3.2" />
+        <path d="M17 30L24 37L38 22" stroke="#171717" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round" />
+    </g>
+    <text x="74" y="41" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="27" font-weight="900" letter-spacing="1.5" fill="#171717">SAIOSH</text>
+    <text x="75" y="57" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="8.6" font-weight="700" letter-spacing="0.25" fill="#525252">SA Institute of Occupational Safety</text>
+</svg>

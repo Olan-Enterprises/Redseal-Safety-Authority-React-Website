@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 80" fill="none">
+    <g transform="translate(12, 12)">
+        <circle cx="28" cy="28" r="24" stroke="#0284C7" stroke-width="3.2" fill="#0284C7" fill-opacity="0.1" />
+        <path d="M12 28H44" stroke="#171717" stroke-width="3" stroke-linecap="round" />
+        <path d="M26 14L40 28L26 42" stroke="#0284C7" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+        <circle cx="16" cy="28" r="3.5" fill="#0284C7" />
+    </g>
+    <text x="74" y="41" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="30" font-weight="900" letter-spacing="2" fill="#0369A1">TETA</text>
+    <text x="75" y="57" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="8.3" font-weight="700" letter-spacing="0.2" fill="#334155">Transport Education Training Authority</text>
+</svg>

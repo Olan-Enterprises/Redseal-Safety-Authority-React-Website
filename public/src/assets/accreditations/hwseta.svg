@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 245 80" fill="none">
+    <g transform="translate(12, 12)">
+        <rect x="4" y="4" width="48" height="48" rx="14" fill="#0D9488" fill-opacity="0.12" stroke="#0D9488" stroke-width="3.2" />
+        <path d="M28 15V41M15 28H41" stroke="#0D9488" stroke-width="6" stroke-linecap="round" />
+        <circle cx="28" cy="28" r="3" fill="#FFFFFF" />
+    </g>
+    <text x="74" y="41" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="27" font-weight="900" letter-spacing="1.2" fill="#0F766E">HWSETA</text>
+    <text x="75" y="57" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="8.8" font-weight="700" letter-spacing="0.3" fill="#334155">Health &amp; Welfare Sector Education</text>
+</svg>

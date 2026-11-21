@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 235 80" fill="none">
+    <g transform="translate(12, 12)">
+        <path d="M28 5L52 50H4L28 5Z" fill="#2563EB" fill-opacity="0.12" stroke="#2563EB" stroke-width="3.2" stroke-linejoin="round" />
+        <path d="M28 19L41 44H15L28 19Z" stroke="#171717" stroke-width="2.8" stroke-linejoin="round" />
+        <circle cx="28" cy="36" r="3" fill="#2563EB" />
+    </g>
+    <text x="76" y="41" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="30" font-weight="900" letter-spacing="2.2" fill="#1E293B">IWH</text>
+    <text x="77" y="57" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="8.8" font-weight="700" letter-spacing="0.3" fill="#475569">Institute for Work at Height</text>
+</svg>

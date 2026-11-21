@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 80" fill="none">
+    <g transform="translate(12, 12)">
+        <polygon points="28,4 52,18 52,42 28,56 4,42 4,18" fill="#EA580C" fill-opacity="0.12" stroke="#EA580C" stroke-width="3.2" />
+        <polygon points="28,14 42,22 42,38 28,46 14,38 14,22" stroke="#171717" stroke-width="2.5" />
+        <path d="M28 4V14M52 18L42 22M4 18L14 22M28 46V56" stroke="#EA580C" stroke-width="2.5" />
+    </g>
+    <text x="76" y="41" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="30" font-weight="900" letter-spacing="2" fill="#171717">CETA</text>
+    <text x="77" y="57" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="8.6" font-weight="700" letter-spacing="0.3" fill="#525252">Construction Education &amp; Training</text>
+</svg>
