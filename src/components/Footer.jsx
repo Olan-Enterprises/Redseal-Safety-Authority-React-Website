@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+import { redsealContactDetails } from "../contactDetails";
+
 const navigationLinks = [
     {
         label: "Home",
@@ -19,14 +21,10 @@ const navigationLinks = [
     },
     {
         label: "Contact",
-        href: "contact"
+        href: "/contact"
     }
 ];
-const companyAddressLines = [
-    "1 Mottramdale Road",
-    "Westwood Westvill",
-    "3629"
-];
+const companyAddressLines = redsealContactDetails.address.split(", ");
 
 function Footer() {
     const [newsletterEmail, setNewsletterEmail] = useState("");
@@ -85,7 +83,7 @@ function Footer() {
                             className="flex items-center gap-3"
                         >
                             <img
-                                src="src/assets/RedSeal Logo.jpg"
+                                src="/src/assets/RedSeal Logo.jpg"
                                 alt="Redseal Logo"
                                 className="h-12 w-12 object-contain rounded-full"
                             />

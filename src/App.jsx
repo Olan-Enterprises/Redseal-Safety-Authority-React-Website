@@ -1,11 +1,14 @@
 import { Route, Routes, BrowserRouter } from "react-router-dom";
 
 import Home from "./pages/Home";
+import Contact from "./pages/Contact";
 import Services from "./pages/Services";
+
+import WhatsAppFloatingWidget from "./components/WhatsAppFloatingWidget";
 
 function App() {
     const renderMainContent = () => {
-        // Renders the application routes connecting the Home and Services pages.
+        // Renders the application routes for the Home, Services, and Contact pages.
         // Parameters: None.
         // Returns: JSX.Element - The BrowserRouter wrapping the defined Routes.
         // Example return: <BrowserRouter><Routes>...</Routes></BrowserRouter>.
@@ -19,7 +22,16 @@ function App() {
                     />
                     <Route
                         path="/services"
-                        element={<Services />}
+                        element={(
+                            <>
+                                <Services />
+                                <WhatsAppFloatingWidget />
+                            </>
+                        )}
+                    />
+                    <Route
+                        path="/contact"
+                        element={<Contact />}
                     />
                     <Route
                         path="*"

@@ -1,6 +1,8 @@
 import { useRef, useState, useEffect } from "react";
 import { ChevronDown, Mail, MapPin, Menu, Phone, ReceiptText } from "lucide-react";
 
+import { redsealContactDetails } from "../contactDetails";
+
 const navigationLinks = [
     {
         label: "Home",
@@ -24,7 +26,7 @@ const navigationLinks = [
     },
     {
         label: "Contact",
-        href: "contact",
+        href: "/contact",
         hasDropdown: false
     }
 ];
@@ -137,7 +139,7 @@ function TopNavigation() {
                 <div className="flex w-full flex-wrap items-center justify-between gap-3">
                     <div className="flex flex-wrap items-center gap-4 sm:gap-5">
                         <a
-                            href="https://maps.app.goo.gl/T9CqshgfY7D7zYom8"
+                            href={redsealContactDetails.directionsLink}
                             rel="noopener noreferrer"
                             target="_blank"
                             title="View Redseal location on Google Maps"
@@ -149,7 +151,7 @@ function TopNavigation() {
                                     Durban
                                 </p>
                                 <p className="text-xs text-white">
-                                    Sydenham
+                                    Westville
                                 </p>
                             </div>
                         </a>
@@ -218,7 +220,7 @@ function TopNavigation() {
                             className="flex items-center gap-3"
                         >
                             <img
-                                src="src/assets/RedSeal Logo Transparent.png"
+                                src="/src/assets/RedSeal Logo Transparent.png"
                                 alt="Redseal SA Logo"
                                 className="h-20 w-20 object-contain"
                             />
@@ -253,14 +255,14 @@ function TopNavigation() {
                         }
                     </nav>
                     <div className="hidden items-center sm:flex">
-                        <button
-                            type="button"
+                        <a
+                            href="/contact"
                             title="Request a Quote from RedSeal"
                             className="flex items-center gap-2 rounded-lg bg-red-600 px-5 py-3 text-md font-bold text-white transition hover:bg-red-700"
                         >
                             <p>Get A Quote</p>
                             <ReceiptText className="w-5 h-5 text-white" />
-                        </button>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -293,7 +295,7 @@ function TopNavigation() {
                                 className="flex items-center gap-3"
                             >
                                 <img
-                                    src="src/assets/RedSeal Logo.jpg"
+                                    src="/src/assets/RedSeal Logo.jpg"
                                     alt="Redseal SA Logo"
                                     className="h-20 w-20 object-contain rounded-full"
                                 />
@@ -334,7 +336,7 @@ function TopNavigation() {
                                 ))
                             }
                             <a
-                                href="contact"
+                                href="/contact"
                                 title="Request a Quote"
                                 onClick={() => setIsSidebarOpen(false)}
                                 className="flex items-center justify-between px-3 py-2.5 font-bold text-3xl text-red-500 uppercase"
@@ -347,13 +349,13 @@ function TopNavigation() {
                         <div className="bg-white/5 p-6 flex flex-col gap-2">
                             <a
                                 className="mb-1 font-normal flex items-center gap-2"
-                                href="https://maps.app.goo.gl/T9CqshgfY7D7zYom8"
+                                href={redsealContactDetails.directionsLink}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 title="Visit Redseal on Google Maps"
                             >
                                 <MapPin className="w-4 h-4" />
-                                <p>Durban, Sydenham</p>
+                                <p>Durban, Westville</p>
                             </a>
                             <a
                                 className="mb-1 font-normal flex items-center gap-2"

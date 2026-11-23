@@ -33,3 +33,91 @@ strong.shimmer-text-red,
         background-position: 300%;
     }
 }
+
+.home-surface {
+    background-image:
+        radial-gradient(ellipse at 93% 0%, rgb(239 68 68 / 9%), transparent 52%),
+        radial-gradient(ellipse at 0% 100%, rgb(220 38 38 / 6%), transparent 48%);
+}
+
+.home-surface-dark {
+    background-image:
+        radial-gradient(ellipse at 96% 0%, rgb(220 38 38 / 20%), transparent 57%),
+        radial-gradient(ellipse at 4% 100%, rgb(153 27 27 / 20%), transparent 54%);
+}
+
+.home-service-card {
+    container-type: inline-size;
+}
+
+.home-service-content {
+    padding: clamp(0.625rem, 4.5cqi, 1.75rem);
+}
+
+.home-service-title {
+    font-size: clamp(0.875rem, 8cqi, 1.875rem);
+    line-height: 1.15;
+}
+
+.home-service-description {
+    font-size: clamp(0.75rem, 4.9cqi, 0.9375rem);
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+}
+
+.home-service-booking {
+    gap: clamp(0.25rem, 2cqi, 0.6rem);
+    padding: 0.45em clamp(0.5rem, 4cqi, 1rem);
+    font-size: clamp(0.6875rem, 5cqi, 1rem);
+}
+
+.home-service-booking-icon {
+    width: clamp(0.875rem, 5.5cqi, 1.25rem);
+    height: auto;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    [data-home-reveal][data-revealed="false"]:not(:focus-within),
+    [data-hero-icons][data-revealed="false"] > li {
+        opacity: 0;
+    }
+
+    [data-home-reveal][data-revealed="true"] {
+        animation: home-fade-in 550ms ease-out both;
+    }
+
+    [data-hero-icons][data-revealed="true"] > li {
+        animation-name: hero-icon-arrive;
+        animation-duration: 720ms;
+        animation-timing-function: cubic-bezier(0.22, 1.45, 0.45, 1);
+        animation-fill-mode: both;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .shimmer-text-red {
+        animation: none;
+    }
+}
+
+@keyframes home-fade-in {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes hero-icon-arrive {
+    from {
+        opacity: 0;
+        transform: translateX(4rem);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}

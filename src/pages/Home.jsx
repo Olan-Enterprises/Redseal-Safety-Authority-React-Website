@@ -1,9 +1,14 @@
 import Lenis from "lenis";
-import { useRef, useState, useEffect } from "react";
-import { ArrowRight, ArrowUpRight, Biohazard, BookBookmark, BriefcaseMedical, Calendar, CheckCircle2, ChevronDown, ChevronLeft, ChevronRight, Clock, Drill, Flame, HardHat, Mail, MapPin, Phone, Play, Plus, Quote, Scale, Send, ShieldCheck, Star, UserGroup } from "lucide-react";
+import { useRef, useState, useEffect, useLayoutEffect } from "react";
+import { ArrowRight, ArrowUpRight, Biohazard, BookBookmark, BriefcaseMedical, Calendar, CheckCircle2, ChevronDown, ChevronLeft, ChevronRight, Clock, Drill, Flame, HardHat, History, Mail, MapPin, Phone, Play, Plus, Quote, Scale, ShieldCheck, Star, Target, Telescope, UserGroup } from "lucide-react";
 
 import Footer from "../components/Footer";
+import ContactForm from "../components/ContactForm";
 import TopNavigation from "../components/TopNavigation";
+import WhatsAppFloatingWidget from "../components/WhatsAppFloatingWidget";
+import ScrollToTopFloatingWidget from "../components/ScrollToTopFloatingWidget";
+
+import { redsealContactDetails } from "../contactDetails";
 
 const CAROUSEL_AUTO_CYCLE_MILLISECONDS = 7000;
 const CAROUSEL_USER_INTERACTION_PAUSE_MILLISECONDS = 3000;
@@ -66,7 +71,8 @@ const statisticsItems = [
 ];
 const servicesSnapshotItems = [
     {
-        title: "Working At Heights (US: 229998)",
+        title: "Working At Heights",
+        unitStandard: "229998",
         shortTitle: "Working At Heights",
         saqaLink: "https://regqs.saqa.org.za/showUnitStandard.php?id=229998",
         description: "Comprehensive fall arrest, safety harness inspection, ladder safety, and certified high-angle rescue training to ensure full on-site compliance.",
@@ -75,8 +81,9 @@ const servicesSnapshotItems = [
         Icon: HardHat
     },
     {
-        title: "Basic Fire Fighting (US: 12484)",
-        shortTitle: "Basic FIre Fighting",
+        title: "Basic Fire Fighting",
+        unitStandard: "12484",
+        shortTitle: "Basic Fire Fighting",
         saqaLink: "https://allqs.saqa.org.za/showUnitStandard.php?id=12484",
         description: "Essential workplace fire prevention, emergency evacuation procedures, and hands-on fire extinguisher operation for hazardous environments.",
         imageSource: "src/assets/services_snapshot_2.jpg",
@@ -84,8 +91,9 @@ const servicesSnapshotItems = [
         Icon: Flame
     },
     {
-        title: "First Aid Level I (US: 119567)",
-        shortTitle: "First Aid",
+        title: "First Aid Level I",
+        unitStandard: "119567",
+        shortTitle: "First Aid Level I",
         saqaLink: "https://regqs.saqa.org.za/showUnitStandard.php?id=119567",
         description: "Accredited CPR, trauma management, primary patient care, and emergency medical response certified to Department of Employment and Labour standards.",
         imageSource: "src/assets/services_snapshot_3.jpg",
@@ -93,7 +101,8 @@ const servicesSnapshotItems = [
         Icon: BriefcaseMedical
     },
     {
-        title: "Legal Liability (US: 120344)",
+        title: "Legal Liability",
+        unitStandard: "120344",
         shortTitle: "Legal Liability",
         saqaLink: "https://allqs.saqa.org.za/showUnitStandard.php?id=120344",
         description: "Empowering executives, managers, and safety representatives with practical understanding of the Occupational Health and Safety Act and statutory duties.",
@@ -102,7 +111,8 @@ const servicesSnapshotItems = [
         Icon: Scale
     },
     {
-        title: "Hazard Identification & Risk Assessment (US: 244383)",
+        title: "Hazard Identification & Risk Assessment",
+        unitStandard: "244383",
         shortTitle: "HIRA",
         saqaLink: "https://allqs.saqa.org.za/showUnitStandard.php?id=244383",
         description: "Methodological hazard identification, qualitative risk evaluation, and actionable control measures to eliminate workplace hazards and prevent incidents.",
@@ -111,7 +121,8 @@ const servicesSnapshotItems = [
         Icon: Biohazard
     },
     {
-        title: "Power Tools (US: 10255)",
+        title: "Power Tools",
+        unitStandard: "10255",
         shortTitle: "Power Tools",
         saqaLink: "https://regqs.saqa.org.za/showUnitStandard.php?id=10255",
         description: "Comprehensive power tool safety protocols, safe equipment handling, and pre-use inspection to eliminate workplace hazards and prevent incidents.",
@@ -123,6 +134,7 @@ const servicesSnapshotItems = [
 const aboutSections = [
     {
         key: "mission",
+        Icon: Target,
         title: "Our Mission",
         subtitle: "REDSEAL SAFETY TRAINING INSTITUTION",
         description: "Our mission is to empower individuals and organisations with essential knowledge, practical skills, and confidence to build safer, compliant, and incident-free working environments through industry-leading occupational training.",
@@ -130,6 +142,7 @@ const aboutSections = [
     },
     {
         key: "vision",
+        Icon: Telescope,
         title: "Our Vision",
         subtitle: "REDSEAL SAFETY TRAINING INSTITUTION",
         description: "To become South Africa's foremost occupational health and safety training institution, recognised for excellence in safety education, professional development, and establishing proactive zero-harm workplace cultures.",
@@ -137,6 +150,7 @@ const aboutSections = [
     },
     {
         key: "history",
+        Icon: History,
         title: "Our History",
         subtitle: "A DECADE OF SAFETY EXCELLENCE",
         description: "Founded to bridge the critical gap between regulatory compliance and practical life-saving skills, Redseal has grown over a decade of service into a trusted partner with 200+ completed projects and 350+ satisfied clients nationwide.",
@@ -287,42 +301,24 @@ const faqQuestions = [
         answer: "Yes. We offer tiered volume rates for corporate groups, enterprise multi-site accounts, and scheduled recurring training calendars across South Africa."
     }
 ];
-const contactServiceOptions = [
-    "Working at Heights & Fall Protection",
-    "Basic & Advanced Fire Fighting",
-    "First Aid Levels 1, 2 & 3",
-    "Legal Liability (OHS Act 16.1 & 16.2)",
-    "Hazard Identification & Risk Assessment (HIRA)",
-    "Health & Safety File & Compliance Audits",
-    "General Occupational Safety Consultation"
-];
-const redsealContactDetails = {
-    address: "1 Mottramdale Road, Westwood, Westville, 3629",
-    phone: "(+27) 84 208 4966",
-    email: "marketing@redsealsa.com",
-    hours: "Monday – Friday: 08:00 – 17:00"
-};
-
 function Home() {
     const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
     const [animatedStatistics, setAnimatedStatistics] = useState([0, 0, 0, 0]);
     const [activeServiceIndex, setActiveServiceIndex] = useState(0);
     const [expandedAboutSection, setExpandedAboutSection] = useState("mission");
     const [currentReviewIndex, setCurrentReviewIndex] = useState(0);
-    const [reviewProgressPercent, setReviewProgressPercent] = useState(0);
     const [expandedFaqIndex, setExpandedFaqIndex] = useState(0);
     const [selectedFaqCategory, setSelectedFaqCategory] = useState("all");
-    const [contactName, setContactName] = useState("");
-    const [contactEmail, setContactEmail] = useState("");
-    const [contactSelectedService, setContactSelectedService] = useState("");
-    const [contactMessage, setContactMessage] = useState("");
-    const [isContactSubmitted, setIsContactSubmitted] = useState(false);
+    const [isPastHero, setIsPastHero] = useState(false);
+    const mainReference = useRef(null);
+    const heroReference = useRef(null);
     const progressBarReference = useRef(null);
     const isCarouselHoveredReference = useRef(false);
     const timeRemainingInCycleMillisecondsReference = useRef(CAROUSEL_AUTO_CYCLE_MILLISECONDS);
     const userInteractionPauseMillisecondsReference = useRef(0);
     const carouselAnimationFrameReference = useRef(null);
     const lastCarouselTimestampReference = useRef(0);
+    const reviewProgressReference = useRef(null);
     const isReviewHoveredReference = useRef(false);
     const reviewTimeRemainingMillisecondsReference = useRef(REVIEW_AUTO_CYCLE_MILLISECONDS);
     const reviewLastTimestampReference = useRef(0);
@@ -462,14 +458,24 @@ function Home() {
         setExpandedAboutSection(previousSectionKey => (previousSectionKey === sectionKey ? null : sectionKey));
     };
 
+    const resetReviewProgress = () => {
+        // Restarts the review timer and clears the shared navigation progress border.
+        // Parameters: None.
+        // Returns: undefined.
+        // Example return: undefined.
+
+        reviewTimeRemainingMillisecondsReference.current = REVIEW_AUTO_CYCLE_MILLISECONDS;
+        reviewLastTimestampReference.current = performance.now();
+        reviewProgressReference.current?.setAttribute("stroke-dashoffset", "100");
+    };
+
     const handleNextReview = () => {
         // Advances the customer review carousel to the next card and resets cycle progress.
         // Parameters: None.
         // Returns: undefined - Updates state.
         // Example return: undefined.
 
-        reviewTimeRemainingMillisecondsReference.current = REVIEW_AUTO_CYCLE_MILLISECONDS;
-        setReviewProgressPercent(0);
+        resetReviewProgress();
         setCurrentReviewIndex(previousReviewIndex => (previousReviewIndex + 1) % customerReviews.length);
     };
 
@@ -479,8 +485,7 @@ function Home() {
         // Returns: undefined - Updates state.
         // Example return: undefined.
 
-        reviewTimeRemainingMillisecondsReference.current = REVIEW_AUTO_CYCLE_MILLISECONDS;
-        setReviewProgressPercent(0);
+        resetReviewProgress();
         setCurrentReviewIndex(previousReviewIndex => (previousReviewIndex - 1 + customerReviews.length) % customerReviews.length);
     };
 
@@ -490,8 +495,7 @@ function Home() {
         // Returns: undefined - Updates state.
         // Example return: undefined.
 
-        reviewTimeRemainingMillisecondsReference.current = REVIEW_AUTO_CYCLE_MILLISECONDS;
-        setReviewProgressPercent(0);
+        resetReviewProgress();
         setCurrentReviewIndex(targetReviewIndex);
     };
 
@@ -533,15 +537,63 @@ function Home() {
         setExpandedFaqIndex(0);
     };
 
-    const handleContactSubmit = (event) => {
-        // Handles the submission of the contact consultation form and toggles confirmation status.
-        // Parameters: event (React.FormEvent) - Form submission event.
-        // Returns: undefined - Updates submission state.
-        // Example return: undefined.
+    useLayoutEffect(() => {
+        // Tracks the first viewport entry of each marked homepage element.
+        // Parameters: None.
+        // Returns: A cleanup function when IntersectionObserver is available.
+        // Example return: () => revealObserver.disconnect().
 
-        event.preventDefault();
-        setIsContactSubmitted(true);
-    };
+        if(!window.IntersectionObserver) return;
+
+        const revealElements = mainReference.current.querySelectorAll("[data-home-reveal], [data-hero-icons]");
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+            // Shows each observed element once it enters the viewport.
+            // Parameters: entries (IntersectionObserverEntry[]), observer (IntersectionObserver).
+            // Returns: undefined.
+            // Example return: undefined.
+
+            for(const entry of entries) {
+                if(!entry.isIntersecting) continue;
+
+                entry.target.dataset.revealed = "true";
+                observer.unobserve(entry.target);
+            }
+        });
+
+        for(const element of revealElements) {
+            element.dataset.revealed = "false";
+            revealObserver.observe(element);
+        }
+
+        return () => revealObserver.disconnect();
+    }, []);
+
+    useEffect(() => {
+        // Keeps the floating widgets in sync with the hero's position on screen.
+        // Parameters: None.
+        // Returns: A cleanup function that removes the listeners.
+        // Example return: () => window.removeEventListener("scroll", updateHeroVisibility).
+
+        const updateHeroVisibility = () => {
+            // Checks whether the bottom of the hero has passed the top of the viewport.
+            // Parameters: None.
+            // Returns: undefined.
+            // Example return: undefined.
+
+            setIsPastHero(heroReference.current.getBoundingClientRect().bottom <= 0);
+        };
+
+        updateHeroVisibility();
+        window.addEventListener("scroll", updateHeroVisibility, {
+            passive: true
+        });
+        window.addEventListener("resize", updateHeroVisibility);
+
+        return () => {
+            window.removeEventListener("scroll", updateHeroVisibility);
+            window.removeEventListener("resize", updateHeroVisibility);
+        };
+    }, []);
 
     useEffect(() => {
         const lenis = new Lenis();
@@ -590,8 +642,8 @@ function Home() {
                 if(rect.bottom > 0 && rect.top < windowHeight) {
                     const progress = 1 - Math.min(Math.max((rect.top + rect.height) / (windowHeight + rect.height), 0), 1);
 
-                    targetAboutInsetOffset = (progress - 0.5) * 2 * 36;
-                    targetAboutMainOffset = (progress - 0.5) * -20;
+                    targetAboutInsetOffset = (progress - 0.5) * 2 * 60;
+                    targetAboutMainOffset = (progress - 0.5) * -70;
                 }
             }
 
@@ -601,7 +653,7 @@ function Home() {
                 if(rect.bottom > 0 && rect.top < windowHeight) {
                     const progress = 1 - Math.min(Math.max((rect.top + rect.height) / (windowHeight + rect.height), 0), 1);
 
-                    targetServicesOffset = (progress - 0.5) * -24;
+                    targetServicesOffset = (progress - 0.5) * -70;
                 }
             }
 
@@ -611,7 +663,7 @@ function Home() {
                 if(rect.bottom > 0 && rect.top < windowHeight) {
                     const progress = 1 - Math.min(Math.max((rect.top + rect.height) / (windowHeight + rect.height), 0), 1);
 
-                    targetTeamOffset = (progress - 0.5) * -20;
+                    targetTeamOffset = (progress - 0.5) * -50;
                 }
             }
 
@@ -625,15 +677,15 @@ function Home() {
             }
 
             if(aboutMainImageReference.current) {
-                aboutMainImageReference.current.style.transform = `scale(1.08) translateY(${currentAboutMainOffset}px)`;
+                aboutMainImageReference.current.style.transform = `scale(1.15) translateY(${currentAboutMainOffset}px)`;
             }
 
             servicesImagesReference.current.forEach(imageElement => {
-                if(imageElement) imageElement.style.transform = `scale(1.08) translateY(${currentServicesOffset}px)`;
+                if(imageElement) imageElement.style.transform = `scale(1.15) translateY(${currentServicesOffset}px)`;
             });
 
             teamImagesReference.current.forEach(imageElement => {
-                if(imageElement) imageElement.style.transform = `scale(1.08) translateY(${currentTeamOffset}px)`;
+                if(imageElement) imageElement.style.transform = `scale(1.15) translateY(${currentTeamOffset}px)`;
             });
 
             parallaxAnimationFrameId = requestAnimationFrame(updateParallaxFrame);
@@ -825,15 +877,13 @@ function Home() {
                 reviewTimeRemainingMillisecondsReference.current -= deltaTimeMilliseconds;
 
                 if(reviewTimeRemainingMillisecondsReference.current <= 0) {
-                    reviewTimeRemainingMillisecondsReference.current = REVIEW_AUTO_CYCLE_MILLISECONDS;
-                    setReviewProgressPercent(0);
+                    resetReviewProgress();
                     setCurrentReviewIndex(previousReviewIndex => (previousReviewIndex + 1) % customerReviews.length);
                 }
                 else {
-                    const elapsedMilliseconds = REVIEW_AUTO_CYCLE_MILLISECONDS - reviewTimeRemainingMillisecondsReference.current;
-                    const calculatedPercent = (elapsedMilliseconds / REVIEW_AUTO_CYCLE_MILLISECONDS) * 100;
+                    const remainingPercent = (reviewTimeRemainingMillisecondsReference.current / REVIEW_AUTO_CYCLE_MILLISECONDS) * 100;
 
-                    setReviewProgressPercent(calculatedPercent);
+                    reviewProgressReference.current?.setAttribute("stroke-dashoffset", String(remainingPercent));
                 }
             }
 
@@ -952,7 +1002,10 @@ function Home() {
 
         return (
             <div className="flex flex-col justify-between space-y-6 sm:space-y-8 lg:py-2">
-                <div className="flex gap-3 sm:gap-4">
+                <div
+                    data-home-reveal=""
+                    className="flex gap-3 sm:gap-4"
+                >
                     <div className="w-[0.2rem] flex-shrink-0 rounded-full bg-red-600" />
                     <p className="text-base tracking-tighter leading-relaxed text-neutral-700 sm:text-md">
                         Our safety is our mission. RedSeal Safety Authority provides accredited training and consulting solutions that prepare teams to prevent risks, respond effectively, and create a culture of safety across industries.
@@ -964,12 +1017,16 @@ function Home() {
                         alt="Redseal accredited safety specialists and trainers"
                         className="h-10 w-auto rounded-full object-contain"
                     /> */}
-                    <div className="flex flex-col gap-3 min-[480px]:flex-row min-[480px]:items-center">
+                    <div className="flex flex-col flex-wrap gap-3 min-[480px]:flex-row min-[480px]:items-center">
                         <div className="flex flex-col text-base font-bold text-neutral-900 min-[360px]:text-[1.25rem]">
                             <p>Training & consulting,</p>
                             <p>the professional way</p>
                         </div>
-                        <ul className="flex items-center">
+                        <ul
+                            data-hero-icons=""
+                            aria-hidden="true"
+                            className="flex shrink-0 items-center -space-x-5 sm:-space-x-6"
+                        >
                             {
                                 [
                                     BriefcaseMedical,
@@ -982,7 +1039,7 @@ function Home() {
                                         key={`hero-accreditation-icon-${index}`}
                                         className="flex h-12 w-12 items-center justify-center rounded-full border-4 border-white bg-red-500 text-black min-[360px]:h-14 min-[360px]:w-14 sm:h-16 sm:w-16"
                                         style={{
-                                            transform: `translateX(${index * -26}px)`,
+                                            animationDelay: `${index * 85}ms`,
                                             zIndex: 10 - index
                                         }}
                                     >
@@ -993,9 +1050,12 @@ function Home() {
                         </ul>
                     </div>
                 </div>
-                <div className="flex flex-wrap items-center gap-4 pt-1">
+                <div
+                    data-home-reveal=""
+                    className="flex flex-wrap items-center gap-4 pt-1"
+                >
                     <a
-                        href="#bookings"
+                        href="/contact"
                         title="Book accredited safety training with Redseal"
                         className="inline-flex items-center justify-center rounded-full bg-red-600 px-8 py-3.5 text-base font-semibold text-white shadow-md transition-all hover:bg-red-700 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 active:scale-95"
                     >
@@ -1074,18 +1134,37 @@ function Home() {
     };
 
     const renderHero = () => {
-        // Renders the complete hero section including heading, carousel with inset controls, and the lower infinite text slider
+        // Renders the hero heading, safety training carousel, and scrolling ticker.
+        // Parameters: None.
+        // Returns: JSX.Element.
+        // Example return: <section>...</section>.
 
         return (
-            <section className="w-full bg-white pt-6 pb-12 sm:pt-4 sm:pb-16">
+            <section
+                ref={heroReference}
+                className="w-full bg-white pt-6 pb-12 sm:pt-4 sm:pb-16"
+            >
                 <div className="mx-auto px-3 min-[360px]:px-4 sm:px-6 lg:px-8">
-                    <div className="mb-8 sm:mb-6">
-                        <div className="max-w-5xl text-2xl font-extrabold tracking-tight leading-tight min-[360px]:text-3xl min-[360px]:leading-snug sm:text-5xl sm:leading-[3.25rem] lg:text-5xl">
-                            <h1>Innovative Technologies for Modern Health & Safety Compliance</h1>
-                        </div>
+                    <div
+                        data-home-reveal=""
+                        className="mb-8 sm:mb-6"
+                    >
+                        <p className="mb-2 flex items-center gap-2 text-sm font-bold uppercase tracking-wide text-red-600">
+                            <span
+                                aria-hidden="true"
+                                className="h-0.5 w-6 rounded-full bg-red-500"
+                            />
+                            Accredited Safety Training & Consulting
+                        </p>
+                        <h1 className="max-w-5xl text-balance text-3xl font-extrabold leading-tight tracking-tight text-neutral-950 min-[360px]:text-4xl sm:text-5xl lg:text-6xl">
+                            Train for the Risk. <strong className="shimmer-text-red">Work with Confidence.</strong>
+                        </h1>
                     </div>
                     <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-12 lg:gap-12">
-                        <div className="w-full min-w-0 lg:col-span-7">
+                        <div
+                            data-home-reveal=""
+                            className="w-full min-w-0 lg:col-span-7"
+                        >
                             {renderCarouselViewport()}
                         </div>
                         <div className="w-full min-w-0 lg:col-span-5">
@@ -1112,13 +1191,19 @@ function Home() {
                 className="w-full bg-white py-8"
             >
                 <div className="mx-auto max-w-5xl px-3 min-[360px]:px-4 sm:px-6 lg:px-8">
-                    <p className="text-center text-base font-medium text-neutral-600 min-[360px]:text-lg sm:text-xl lg:text-[1.5rem]">
+                    <p
+                        data-home-reveal=""
+                        className="text-center text-base font-medium text-neutral-600 min-[360px]:text-lg sm:text-xl lg:text-[1.5rem]"
+                    >
                         At RedSeal, we are committed to revolutionising the training and consulting industry with innovative, sustainable, and professional solutions. With a proven track record of delivering exception projects, we combine{" "}
                         <span className="font-bold text-red-600">
                             state-of-the-art technology, skilled expertise, and customer-centric approaches to bring visions to life.
                         </span>
                     </p>
-                    <div className="mt-8 grid grid-cols-2 gap-4 text-center min-[360px]:gap-8 sm:mt-12 md:grid-cols-4 md:gap-12">
+                    <div
+                        data-home-reveal=""
+                        className="mt-8 grid grid-cols-2 gap-4 text-center min-[360px]:gap-8 sm:mt-12 md:grid-cols-4 md:gap-12"
+                    >
                         {
                             statisticsItems.map((statItem, index) => (
                                 <div
@@ -1141,15 +1226,18 @@ function Home() {
     };
 
     const renderAbout = () => {
-        // Renders the about company section featuring dual overlapping imagery and interactive mission, vision, and history accordions.
+        // Renders overlapping company imagery and the mission, vision, and history accordion.
         // Parameters: None.
         // Returns: JSX.Element - The rendered about section element.
         // Example return: <section className="w-full bg-white py-16 sm:py-20">...</section>.
 
         return (
-            <section className="w-full bg-white py-16 sm:py-20">
+            <section className="home-surface w-full bg-neutral-50 py-16 sm:py-20">
                 <div className="mx-auto w-full px-3 min-[360px]:px-4 sm:px-6 lg:px-8">
-                    <div className="mb-12 flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
+                    <div
+                        data-home-reveal=""
+                        className="mb-12 flex flex-col justify-between gap-6 sm:flex-row sm:items-end"
+                    >
                         <div className="max-w-2xl">
                             <div>
                                 <div className="flex items-center gap-2">
@@ -1178,6 +1266,7 @@ function Home() {
                     <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-12 lg:gap-14">
                         <div
                             ref={aboutContainerReference}
+                            data-home-reveal=""
                             className="pb-8 sm:pb-10 lg:col-span-5 lg:pb-0 xl:col-span-5"
                         >
                             <div className="group relative">
@@ -1187,7 +1276,7 @@ function Home() {
                                         ref={aboutMainImageReference}
                                         src="src/assets/about_blueprints.jpg"
                                         alt="Safety consultant inspecting technical blueprints on site"
-                                        className="h-[24rem] w-full object-cover will-change-transform transition-transform duration-700 ease-out group-hover:scale-105 sm:h-[30rem] lg:h-[34rem]"
+                                        className="h-[24rem] w-full object-cover will-change-transform sm:h-[30rem] lg:h-[34rem]"
                                     />
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20" />
                                     <div className="absolute top-5 left-5 z-20 flex items-center gap-2.5 rounded-full border border-white/30 bg-neutral-950/80 px-4 py-2 text-white shadow-xl backdrop-blur-md">
@@ -1224,83 +1313,73 @@ function Home() {
                                 </div>
                             </div>
                         </div>
-                        <div className="flex flex-col gap-4 lg:col-span-7 xl:col-span-7">
+                        <div
+                            data-home-reveal=""
+                            className="flex min-w-0 flex-col gap-4 lg:col-span-7 xl:col-span-7"
+                        >
                             {
-                                aboutSections.map((aboutSection, sectionIndex) => {
+                                aboutSections.map(aboutSection => {
                                     const isExpanded = expandedAboutSection === aboutSection.key;
+                                    const headingId = `about-${aboutSection.key}-heading`;
+                                    const panelId = `about-${aboutSection.key}-panel`;
 
                                     return (
-                                        <div
-                                            key={`${aboutSection.key}-${sectionIndex}`}
-                                            className={`overflow-hidden rounded-3xl transition-all duration-300 ${
+                                        <article
+                                            key={aboutSection.key}
+                                            className={`overflow-hidden rounded-2xl border transition-colors ${
                                                 isExpanded ?
-                                                "border-2 border-red-500/50 bg-white shadow-xl shadow-red-500/5" :
-                                                "border border-neutral-200/80 bg-neutral-50/70 hover:border-neutral-300 hover:bg-neutral-50"
+                                                "border-red-200 bg-white shadow-lg shadow-red-950/5" :
+                                                "border-neutral-200 bg-white/80 hover:border-red-200"
                                             }`}
                                         >
-                                            <button
-                                                type="button"
-                                                onClick={() => handleToggleAboutSection(aboutSection.key)}
-                                                title={`Toggle ${aboutSection.title} dropdown`}
-                                                className="flex w-full items-center justify-between p-6 text-left transition-colors sm:p-7"
-                                            >
-                                                <div className="flex items-center gap-4">
-                                                    <span
-                                                        className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl text-xs font-black transition-all duration-300 sm:text-sm ${
-                                                            isExpanded ?
-                                                            "bg-red-600 text-white shadow-md shadow-red-600/30" :
-                                                            "bg-neutral-200/80 text-neutral-600"
-                                                        }`}
-                                                    >
-                                                        {`0${sectionIndex + 1}`}
+                                            <h3>
+                                                <button
+                                                    id={headingId}
+                                                    type="button"
+                                                    title={`Explore ${aboutSection.title.toLowerCase()}`}
+                                                    aria-expanded={isExpanded}
+                                                    aria-controls={panelId}
+                                                    onClick={() => handleToggleAboutSection(aboutSection.key)}
+                                                    className="group flex w-full items-center gap-4 px-4 py-4 text-left focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-red-500 sm:px-6"
+                                                >
+                                                    <span className={`flex size-11 shrink-0 items-center justify-center rounded-xl transition-colors ${
+                                                        isExpanded ? "bg-red-600 text-white" : "bg-red-50 text-red-600 group-hover:bg-red-100"
+                                                    }`}>
+                                                        <aboutSection.Icon className="size-5" />
                                                     </span>
-                                                    <span className="text-xl font-bold tracking-tight text-neutral-900 min-[360px]:text-2xl sm:text-3xl">
+                                                    <span className="flex-1 text-lg font-bold tracking-tight text-neutral-950 sm:text-xl">
                                                         {aboutSection.title}
                                                     </span>
-                                                </div>
-                                                <span
-                                                    className={`ml-4 flex h-9 w-9 shrink-0 items-center justify-center rounded-full transition-all duration-300 ${
-                                                        isExpanded ?
-                                                        "rotate-180 bg-red-100 text-red-600" :
-                                                        "bg-neutral-200/80 text-neutral-600"
-                                                    }`}
-                                                >
-                                                    <ChevronDown className="h-5 w-5" />
-                                                </span>
-                                            </button>
+                                                    <span className="flex size-8 shrink-0 items-center justify-center rounded-full border border-neutral-200 text-neutral-700">
+                                                        <ChevronDown className={`size-4 transition-transform motion-reduce:transition-none ${isExpanded ? "rotate-180" : ""}`} />
+                                                    </span>
+                                                </button>
+                                            </h3>
                                             <div
-                                                className={`grid transition-[grid-template-rows,opacity] duration-300 ease-in-out ${
+                                                id={panelId}
+                                                aria-labelledby={headingId}
+                                                aria-hidden={!isExpanded}
+                                                role="region"
+                                                className={`grid transition-[grid-template-rows,opacity] duration-300 motion-reduce:transition-none ${
                                                     isExpanded ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
                                                 }`}
                                             >
                                                 <div className="overflow-hidden">
-                                                    <div className="border-t border-neutral-100 px-6 pt-4 pb-6 sm:px-8 sm:pb-8">
-                                                        <div className="mb-2.5 flex items-center gap-2">
-                                                            <span className="h-1.5 w-1.5 rounded-full bg-red-600" />
-                                                            <p className="text-xs font-bold uppercase tracking-wider text-red-600">
-                                                                {aboutSection.subtitle}
-                                                            </p>
-                                                        </div>
-                                                        <p className="text-sm leading-relaxed text-neutral-700 sm:text-base">
+                                                    <div className="mx-4 border-t border-red-100 px-2 pt-5 pb-6 sm:mx-6 sm:px-3">
+                                                        <p className="mb-2 flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-red-700">
+                                                            <span className="h-0.5 w-5 shrink-0 rounded-full bg-red-500" />
+                                                            {aboutSection.subtitle}
+                                                        </p>
+                                                        <p className="text-base leading-relaxed text-neutral-700">
                                                             {aboutSection.description}
                                                         </p>
-                                                        {
-                                                            aboutSection.commitment &&
-                                                            (
-                                                                <div className="mt-5 flex items-center gap-3 rounded-2xl border border-red-200/80 bg-gradient-to-r from-red-50 via-white to-red-50/40 p-4 text-xs font-semibold text-neutral-900 shadow-xs sm:text-sm">
-                                                                    <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-red-600 text-white shadow-xs">
-                                                                        <CheckCircle2 className="h-4 w-4" />
-                                                                    </span>
-                                                                    <span className="font-semibold text-neutral-800">
-                                                                        {aboutSection.commitment}
-                                                                    </span>
-                                                                </div>
-                                                            )
-                                                        }
+                                                        <p className="mt-4 rounded-xl bg-red-50 px-4 py-3 text-sm font-semibold text-red-900">
+                                                            {aboutSection.commitment}
+                                                        </p>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </article>
                                     );
                                 })
                             }
@@ -1341,15 +1420,18 @@ function Home() {
         // Renders the animated expanding services snapshot carousel, course highlights, and corporate consultation call-to-action block.
         // Parameters: None.
         // Returns: JSX.Element - The rendered services snapshot section element.
-        // Example return: <section className="w-full bg-black py-16 text-white sm:py-12 my-10">...</section>.
+        // Example return: <section className="home-surface-dark my-10 w-full bg-neutral-950 py-16 text-white sm:py-12">...</section>.
 
         return (
             <section
                 ref={servicesSectionReference}
-                className="w-full bg-black py-16 text-white sm:py-12 my-10"
+                className="home-surface-dark my-10 w-full bg-neutral-950 py-16 text-white sm:py-12"
             >
                 <div className="mx-auto w-full px-3 min-[360px]:px-4 sm:px-6 lg:px-8">
-                    <div className="mb-10 flex items-center flex-wrap">
+                    <div
+                        data-home-reveal=""
+                        className="mb-10 flex items-center flex-wrap"
+                    >
                         <div>
                             <div className="flex items-center gap-2">
                                 <span className="w-6 h-0.5 rounded-full bg-red-500"></span>
@@ -1361,7 +1443,10 @@ function Home() {
                         </div>
                         <p className="text-sm min-[360px]:text-base font-medium text-neutral-200 sm:text-sm lg:text-[1.25rem] max-w-5xl">At Redseal, we provide a wide range of safety training and consulting services to help you meet your compliance requirements.</p>
                     </div>
-                    <div className="grid grid-cols-1 items-stretch gap-6 lg:grid-cols-12">
+                    <div
+                        data-home-reveal=""
+                        className="grid grid-cols-1 items-stretch gap-6 lg:grid-cols-12"
+                    >
                         <div className="order-2 flex h-[48rem] w-full flex-col gap-3 overflow-hidden rounded-lg sm:h-[52rem] lg:order-1 lg:col-span-8 lg:h-[30rem] lg:flex-row xl:col-span-9">
                             {
                                 servicesSnapshotItems.map((serviceItem, serviceIndex) => {
@@ -1369,11 +1454,19 @@ function Home() {
 
                                     return (
                                         <div
-                                            key={`${serviceItem.title}-${serviceIndex}`}
+                                            key={serviceItem.title}
                                             onMouseEnter={() => handleServiceMouseEnter(serviceIndex)}
                                             onMouseLeave={handleServiceMouseLeave}
-                                            onClick={() => setActiveServiceIndex(serviceIndex)}
-                                            className={`relative overflow-hidden rounded-lg transition-all duration-700 ease-in-out ${isSelected ? "flex-[3.5] sm:flex-[4] lg:flex-[4.5]" : "flex-1"}`}
+                                            onFocus={() => handleServiceMouseEnter(serviceIndex)}
+                                            onBlur={event => {
+                                                // Resumes the rotation after focus leaves this service card.
+                                                // Parameters: event (React.FocusEvent) - The card's blur event.
+                                                // Returns: undefined.
+                                                // Example return: undefined.
+
+                                                if(!event.currentTarget.contains(event.relatedTarget)) handleServiceMouseLeave();
+                                            }}
+                                            className={`home-service-card relative min-w-0 overflow-hidden rounded-xl transition-[flex] duration-700 ease-in-out motion-reduce:transition-none ${isSelected ? "flex-[3.5] sm:flex-[4] lg:flex-[4.5]" : "flex-1"}`}
                                         >
                                             <img
                                                 ref={element => {
@@ -1381,50 +1474,60 @@ function Home() {
                                                 }}
                                                 src={serviceItem.imageSource}
                                                 alt={serviceItem.imageAltText}
-                                                className="absolute inset-0 h-full w-full object-cover will-change-transform transition-transform duration-700 ease-out"
-                                                style={{
-                                                    transform: isSelected ? "scale(1.05)" : "scale(1.0)"
-                                                }}
+                                                className="absolute inset-0 h-full w-full object-cover will-change-transform"
                                             />
-                                            <div className={`absolute inset-0 transition-opacity duration-700 ${isSelected ? "bg-gradient-to-t from-black/90 via-black/35 to-black/10 opacity-100" : "bg-black/60 opacity-100"}`}/>
-                                            <div className="h-full p-8 flex items-end gap-8 justify-between">
-                                                <div className={`transition-all duration-500 ${isSelected ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-4 opacity-0"}`}>
+                                            <div className={`absolute inset-0 transition-colors duration-700 ${isSelected ? "bg-gradient-to-t from-black via-black/50 to-black/15" : "bg-black/60"}`} />
+                                            <button
+                                                type="button"
+                                                title={`Show ${serviceItem.shortTitle}`}
+                                                aria-pressed={isSelected}
+                                                onClick={() => handleServiceMouseEnter(serviceIndex)}
+                                                className="absolute inset-0 flex items-center justify-center text-white focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-red-400"
+                                            >
+                                                <serviceItem.Icon className={`size-5 transition-opacity ${isSelected ? "opacity-0" : "opacity-100"}`} />
+                                            </button>
+                                            <div
+                                                inert={!isSelected}
+                                                className={`home-service-content pointer-events-none absolute inset-0 flex min-w-0 flex-col items-start justify-between transition-opacity motion-reduce:transition-none ${
+                                                    isSelected ? "opacity-100 delay-150 duration-300" : "opacity-0"
+                                                }`}
+                                            >
+                                                <a
+                                                    href="/services"
+                                                    title={`Schedule ${serviceItem.shortTitle}`}
+                                                    className="home-service-booking pointer-events-auto flex max-w-full items-center self-end rounded-full bg-white font-bold text-neutral-950 transition-colors hover:bg-red-50 focus-visible:outline-2 focus-visible:outline-red-500"
+                                                >
+                                                    <serviceItem.Icon className="home-service-booking-icon shrink-0 text-red-600" />
+                                                    <span className="min-w-0 truncate">Schedule {serviceItem.shortTitle}</span>
+                                                </a>
+                                                <div className="w-full min-w-0">
                                                     <a
                                                         href={serviceItem.saqaLink}
+                                                        title={`View SAQA unit standard for ${serviceItem.title}`}
                                                         target="_blank"
                                                         rel="noopener noreferrer"
+                                                        className="pointer-events-auto block w-fit max-w-full transition-colors hover:text-red-400 focus-visible:outline-2 focus-visible:outline-red-500"
                                                     >
-                                                        <h3 className="hover:text-red-500 transition-all text-xl min-[360px]:text-2xl font-extrabold tracking-tight text-white sm:text-3xl">
-                                                            {serviceItem.title}
+                                                        <h3 className="home-service-title truncate font-extrabold tracking-tight">
+                                                            {serviceItem.shortTitle}
                                                         </h3>
+                                                        <span className="text-xs font-semibold text-red-300">
+                                                            Unit standard {serviceItem.unitStandard}
+                                                        </span>
                                                     </a>
-                                                    <p className="mt-2 max-w-lg text-xs leading-relaxed text-neutral-300 sm:text-sm line-clamp-3 sm:line-clamp-none">
+                                                    <p className="home-service-description mt-1.5 max-w-lg text-neutral-200">
                                                         {serviceItem.description}
                                                     </p>
                                                 </div>
-                                                <button
-                                                    className={`absolute top-6 right-6 transition-all duration-500 ${isSelected ? "scale-100 opacity-100" : "pointer-events-none scale-75 opacity-0"}`}
-                                                    type="button"
-                                                    title={`Book ${serviceItem.shortTitle}`}
-                                                >
-                                                    <a
-                                                        href="services"
-                                                        className="flex px-4 py-3 items-center gap-2 font-bold justify-center rounded-full bg-white text-neutral-950 text-nowrap transition-transform hover:scale-102 active:scale-95"
-                                                    >
-                                                        <serviceItem.Icon className="h-5 w-5 sm:h-6 sm:w-6" />
-                                                        <p>Schedule {serviceItem.shortTitle}</p>
-                                                        <ArrowRight className="h-5 w-5 sm:h-6 sm:w-6" />
-                                                    </a>
-                                                </button>
                                             </div>
                                         </div>
                                     );
                                 })
                             }
                         </div>
-                        <div className="relative order-1 flex min-h-[16rem] flex-col justify-between rounded-lg bg-neutral-900 p-8 text-white sm:p-8 lg:order-2 lg:col-span-4 lg:min-h-full xl:col-span-3">
+                        <div className="relative order-1 flex min-h-[16rem] flex-col justify-between home-surface-dark rounded-xl border border-white/10 bg-neutral-900 p-8 text-white sm:p-8 lg:order-2 lg:col-span-4 lg:min-h-full xl:col-span-3">
                             <div className="flex items-start justify-between gap-4">
-                                <h2 className="text-3xl font-black uppercase leading-[1.05] tracking-tight sm:text-4xl lg:text-5xl">
+                                <h2 className="max-w-sm pr-10 text-3xl font-black uppercase leading-[1.05] tracking-tight sm:text-4xl">
                                     Take a look at our full catalogue
                                 </h2>
                                 <a
@@ -1447,7 +1550,10 @@ function Home() {
                         </div>
                     </div>
                     <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                        <div className="rounded-2xl border border-white/10 bg-neutral-900/60 p-6 backdrop-blur-sm">
+                        <div
+                            data-home-reveal=""
+                            className="home-surface-dark rounded-2xl border border-white/10 bg-neutral-900 p-6"
+                        >
                             <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-red-600/20 text-red-500">
                                 <ShieldCheck className="h-6 w-6" />
                             </div>
@@ -1458,7 +1564,10 @@ function Home() {
                                 Certified qualifications adhering to the South African Occupational Health and Safety Act and SAQA unit standards.
                             </p>
                         </div>
-                        <div className="rounded-2xl border border-white/10 bg-neutral-900/60 p-6 backdrop-blur-sm">
+                        <div
+                            data-home-reveal=""
+                            className="home-surface-dark rounded-2xl border border-white/10 bg-neutral-900 p-6"
+                        >
                             <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-red-600/20 text-red-500">
                                 <Scale className="h-6 w-6" />
                             </div>
@@ -1469,7 +1578,10 @@ function Home() {
                                 Mitigation audits, statutory legal compliance advisory, and Department of Employment and Labour alignment.
                             </p>
                         </div>
-                        <div className="rounded-2xl border border-white/10 bg-neutral-900/60 p-6 backdrop-blur-sm">
+                        <div
+                            data-home-reveal=""
+                            className="home-surface-dark rounded-2xl border border-white/10 bg-neutral-900 p-6"
+                        >
                             <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-red-600/20 text-red-500">
                                 <HardHat className="h-6 w-6" />
                             </div>
@@ -1480,7 +1592,10 @@ function Home() {
                                 Delivered at your operating facilities, plants, yards, or construction sites across all 9 provinces in South Africa.
                             </p>
                         </div>
-                        <div className="rounded-2xl border border-white/10 bg-neutral-900/60 p-6 backdrop-blur-sm">
+                        <div
+                            data-home-reveal=""
+                            className="home-surface-dark rounded-2xl border border-white/10 bg-neutral-900 p-6"
+                        >
                             <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-red-600/20 text-red-500">
                                 <CheckCircle2 className="h-6 w-6" />
                             </div>
@@ -1492,7 +1607,10 @@ function Home() {
                             </p>
                         </div>
                     </div>
-                    <div className="mt-8 flex flex-col items-center justify-between gap-6 rounded-2xl border border-white/15 bg-gradient-to-r from-neutral-900 via-neutral-900/90 to-red-950/40 p-6 sm:flex-row sm:p-8">
+                    <div
+                        data-home-reveal=""
+                        className="mt-8 flex flex-col items-center justify-between gap-6 rounded-2xl border border-white/15 bg-gradient-to-r from-neutral-900 via-neutral-900/90 to-red-950/40 p-6 sm:flex-row sm:p-8"
+                    >
                         <div>
                             <h3 className="text-xl font-bold text-white sm:text-2xl">
                                 Need a Custom Corporate Safety Plan?
@@ -1503,7 +1621,7 @@ function Home() {
                         </div>
                         <div className="flex flex-wrap items-center gap-4">
                             <a
-                                href="contact"
+                                href="/contact"
                                 title="Request a corporate consultation"
                                 className="inline-flex items-center gap-2 rounded-xl bg-red-600 px-6 py-3 text-sm font-semibold text-white shadow-md transition-colors hover:bg-red-700 active:scale-95"
                             >
@@ -1600,7 +1718,10 @@ function Home() {
                 className="w-full bg-white"
             >
                 <div className="mx-auto w-full pt-10 px-3 min-[360px]:px-4 sm:px-6 lg:px-8">
-                    <div className="mb-8 flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
+                    <div
+                        data-home-reveal=""
+                        className="mb-8 flex flex-col justify-between gap-6 sm:flex-row sm:items-end"
+                    >
                         <div className="max-w-3xl">
                             <div>
                                 <div className="flex items-center gap-2">
@@ -1620,7 +1741,7 @@ function Home() {
                         </div>
                         <div className="flex-shrink-0">
                             <a
-                                href="contact"
+                                href="/contact"
                                 title="Get in touch with the Redseal leadership team"
                                 className="inline-flex items-center gap-2 rounded-xl bg-red-600 px-6 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-red-700"
                             >
@@ -1635,6 +1756,7 @@ function Home() {
                                 return (
                                     <div
                                         key={`${teamMemberItem.name}-${teamMemberIndex}`}
+                                        data-home-reveal=""
                                         className={`flex flex-col ${teamMemberItem.isCeo ? "lg:flex-[1.4]" : "lg:flex-1"}`}
                                     >
                                         <div className={`group relative w-full overflow-hidden rounded-xl bg-neutral-100 shadow-md ${teamMemberItem.isCeo ? "h-[19rem] sm:h-[21rem] lg:h-[22rem]" : "h-[16rem] sm:h-[18rem] lg:h-[18rem]"}`}>
@@ -1644,7 +1766,7 @@ function Home() {
                                                 }}
                                                 src={teamMemberItem.imageSource}
                                                 alt={teamMemberItem.imageAltText}
-                                                className="h-full w-full object-cover brightness-75 will-change-transform transition-transform duration-500 group-hover:scale-105"
+                                                className="h-full w-full object-cover brightness-75 will-change-transform"
                                             />
                                             <div className="absolute top-4 right-4 z-10 flex flex-col gap-2">
                                                 <a
@@ -1764,7 +1886,10 @@ function Home() {
             <section className="w-full bg-white pt-24">
                 <div className="mx-auto w-full px-3 min-[360px]:px-4 sm:px-6 lg:px-8">
                     <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-12 lg:gap-16">
-                        <div className="flex flex-col items-start lg:col-span-5">
+                        <div
+                            data-home-reveal=""
+                            className="flex flex-col items-start lg:col-span-5"
+                        >
                             <div>
                                 <div className="flex items-center gap-2">
                                     <span className="w-6 h-0.5 rounded-full bg-red-500"></span>
@@ -1779,7 +1904,7 @@ function Home() {
                             </p>
                             <div className="mt-8 flex flex-wrap items-center gap-4">
                                 <a
-                                    href="contact"
+                                    href="/contact"
                                     title="Book safety training with Redseal"
                                     className="flex items-center gap-3 items-center justify-center rounded-xl bg-red-600 px-6 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-red-700"
                                 >
@@ -1795,84 +1920,65 @@ function Home() {
                                 </a>
                             </div>
                         </div>
-                        <div className="flex flex-col lg:col-span-7">
-                            <div className="mb-4 flex items-center justify-end gap-3">
-                                <div className="relative flex h-11 w-11 items-center justify-center">
+                        <div
+                            data-home-reveal=""
+                            className="flex min-w-0 flex-col lg:col-span-7"
+                        >
+                            <div className="mb-4 flex justify-end">
+                                <div className="relative flex h-12 w-27 items-center justify-center gap-1.5 rounded-full bg-white shadow-sm">
                                     <svg
-                                        className="pointer-events-none absolute inset-0 -rotate-90"
-                                        width="44"
-                                        height="44"
-                                        viewBox="0 0 44 44"
+                                        aria-hidden="true"
+                                        className="pointer-events-none absolute inset-0"
+                                        width="108"
+                                        height="48"
+                                        viewBox="0 0 108 48"
                                     >
-                                        <circle
-                                            cx="22"
-                                            cy="22"
-                                            r="19"
+                                        <path
+                                            d="M54 1 H84 A23 23 0 0 1 84 47 H24 A23 23 0 0 1 24 1 Z"
                                             className="stroke-neutral-200"
                                             strokeWidth="2"
                                             fill="none"
                                         />
-                                        <circle
-                                            cx="22"
-                                            cy="22"
-                                            r="19"
-                                            className="stroke-red-600 transition-[stroke-dashoffset] duration-150 ease-linear"
+                                        <path
+                                            ref={reviewProgressReference}
+                                            d="M54 1 H84 A23 23 0 0 1 84 47 H24 A23 23 0 0 1 24 1 Z"
+                                            className="stroke-red-600"
                                             strokeWidth="2"
                                             fill="none"
-                                            strokeDasharray={120}
-                                            strokeDashoffset={120 - (120 * reviewProgressPercent) / 100}
-                                            strokeLinecap="round"
+                                            pathLength="100"
+                                            strokeDasharray="100"
+                                            strokeDashoffset="100"
                                         />
                                     </svg>
                                     <button
                                         type="button"
                                         onClick={handlePreviousReview}
                                         title="Previous customer review"
-                                        className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-neutral-700 shadow-xs transition-colors hover:bg-neutral-50 hover:text-red-600 active:scale-95"
+                                        className="relative flex size-9 items-center justify-center rounded-full text-neutral-700 transition-colors hover:bg-red-50 hover:text-red-600 focus-visible:outline-2 focus-visible:outline-red-500 active:scale-95"
                                     >
-                                        <ChevronLeft className="h-5 w-5" />
+                                        <ChevronLeft className="size-5" />
                                     </button>
-                                </div>
-                                <div className="relative flex h-11 w-11 items-center justify-center">
-                                    <svg
-                                        className="pointer-events-none absolute inset-0 -rotate-90"
-                                        width="44"
-                                        height="44"
-                                        viewBox="0 0 44 44"
-                                    >
-                                        <circle
-                                            cx="22"
-                                            cy="22"
-                                            r="19"
-                                            className="stroke-neutral-200"
-                                            strokeWidth="2"
-                                            fill="none"
-                                        />
-                                        <circle
-                                            cx="22"
-                                            cy="22"
-                                            r="19"
-                                            className="stroke-red-600 transition-[stroke-dashoffset] duration-150 ease-linear"
-                                            strokeWidth="2"
-                                            fill="none"
-                                            strokeDasharray={120}
-                                            strokeDashoffset={120 - (120 * reviewProgressPercent) / 100}
-                                            strokeLinecap="round"
-                                        />
-                                    </svg>
+                                    <span
+                                        aria-hidden="true"
+                                        className="h-5 w-px bg-neutral-200"
+                                    />
                                     <button
                                         type="button"
                                         onClick={handleNextReview}
                                         title="Next customer review"
-                                        className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-neutral-700 shadow-xs transition-colors hover:bg-neutral-50 hover:text-red-600 active:scale-95"
+                                        className="relative flex size-9 items-center justify-center rounded-full text-neutral-700 transition-colors hover:bg-red-50 hover:text-red-600 focus-visible:outline-2 focus-visible:outline-red-500 active:scale-95"
                                     >
-                                        <ChevronRight className="h-5 w-5" />
+                                        <ChevronRight className="size-5" />
                                     </button>
                                 </div>
                             </div>
-                            <div className="overflow-hidden rounded-xl">
+                            <div
+                                onMouseEnter={handleReviewMouseEnter}
+                                onMouseLeave={handleReviewMouseLeave}
+                                className="home-surface overflow-hidden rounded-xl bg-neutral-50"
+                            >
                                 <div
-                                    className="flex transition-transform duration-700 ease-in-out"
+                                    className="flex transition-transform duration-700 ease-in-out motion-reduce:transition-none"
                                     style={{
                                         transform: `translateX(-${currentReviewIndex * 100}%)`
                                     }}
@@ -1881,11 +1987,9 @@ function Home() {
                                         customerReviews.map((reviewItem, reviewIndex) => (
                                             <div
                                                 key={`${reviewItem.name}-${reviewIndex}`}
-                                                onMouseEnter={handleReviewMouseEnter}
-                                                onMouseLeave={handleReviewMouseLeave}
                                                 className="w-full flex-shrink-0"
                                             >
-                                                <div className="flex min-h-[22rem] flex-col justify-between rounded-xl bg-neutral-200/40 p-8 shadow-sm transition-all sm:min-h-[20rem] sm:p-10 lg:p-12">
+                                                <div className="flex min-h-[22rem] flex-col justify-between rounded-xl bg-white/35 p-8 shadow-sm transition-all sm:min-h-[20rem] sm:p-10 lg:p-12">
                                                     <div>
                                                         <Quote className="text-red-500 fill-current" />
                                                         <p className="text-base font-medium leading-relaxed text-neutral-800 sm:text-lg lg:text-xl">
@@ -1982,7 +2086,10 @@ function Home() {
             <section className="w-full bg-white py-14 sm:py-20 lg:py-24">
                 <div className="mx-auto w-full px-3 min-[360px]:px-4 sm:px-6 lg:px-8">
                     <div className="grid grid-cols-1 items-start gap-10 lg:grid-cols-12 lg:gap-14">
-                        <div className="flex flex-col items-start lg:col-span-5">
+                        <div
+                            data-home-reveal=""
+                            className="flex flex-col items-start lg:col-span-5"
+                        >
                             <div className="flex items-center gap-2">
                                 <div className="flex items-center gap-2">
                                     <span className="w-6 h-0.5 bg-red-500 rounded-full"></span>
@@ -2018,7 +2125,7 @@ function Home() {
                                     })
                                 }
                             </div>
-                            <div className="relative mt-8 w-full overflow-hidden rounded-3xl border border-neutral-100 bg-white p-6 shadow-xl shadow-neutral-100 min-[360px]:p-8">
+                            <div className="home-surface relative mt-8 w-full overflow-hidden rounded-3xl border border-neutral-100 bg-neutral-50 p-6 shadow-xl shadow-neutral-100 min-[360px]:p-8">
                                 <div className="relative mb-5 flex items-center">
                                     <div className="absolute w-40 -inset-2 rounded-full bg-red-100/70 blur-md" />
                                     <img
@@ -2100,10 +2207,13 @@ function Home() {
         return (
             <section
                 id="contact"
-                className="w-full border-t border-neutral-200/60 bg-neutral-50/70 py-14 sm:py-20 lg:py-24"
+                className="home-surface w-full border-t border-neutral-200/60 bg-neutral-50 py-14 sm:py-20 lg:py-24"
             >
                 <div className="mx-auto w-full px-3 min-[360px]:px-4 sm:px-6 lg:px-8">
-                    <div className="mb-12 max-w-3xl">
+                    <div
+                        data-home-reveal=""
+                        className="mb-12 max-w-3xl"
+                    >
                         <div className="mb-3 flex items-center gap-2">
                             <span className="h-0.5 w-6 rounded-full bg-red-500" />
                             <h3 className="text-sm font-bold uppercase text-red-500">
@@ -2193,134 +2303,12 @@ function Home() {
                                     </div>
                                 </div>
                             </div>
-                            <form
-                                onSubmit={handleContactSubmit}
-                                className="rounded-3xl border border-neutral-200/80 bg-white p-6 shadow-sm min-[360px]:p-8"
-                            >
-                                <h3 className="text-xl font-bold text-neutral-900">
-                                    Send Us a Message
-                                </h3>
-                                <p className="mt-1 text-xs text-neutral-500 sm:text-sm">
-                                    Fill out your details below and a certified Redseal consultant will get back to you within 24 hours.
-                                </p>
-                                {
-                                    isContactSubmitted ?
-                                    (
-                                        <div className="mt-6 flex items-center gap-3 rounded-2xl bg-emerald-50 p-4 text-emerald-800">
-                                            <CheckCircle2 className="h-5 w-5 shrink-0 text-emerald-600" />
-                                            <p className="text-sm font-semibold">
-                                                Thank you, {contactName || "valued client"}! Your message has been received. Our team will contact you shortly.
-                                            </p>
-                                        </div>
-                                    ) :
-                                    (
-                                        <div className="mt-6 flex flex-col gap-4">
-                                            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                                                <div>
-                                                    <label
-                                                        htmlFor="contact-name-input"
-                                                        className="mb-1.5 block text-xs font-semibold text-neutral-700"
-                                                    >
-                                                        Your Name
-                                                    </label>
-                                                    <input
-                                                        id="contact-name-input"
-                                                        type="text"
-                                                        required
-                                                        value={contactName}
-                                                        onChange={(event) => setContactName(event.target.value)}
-                                                        placeholder="e.g. Sipho Dlamini"
-                                                        title="Enter your full name"
-                                                        className="w-full rounded-xl border border-neutral-300 bg-neutral-50 px-4 py-3 text-sm text-neutral-900 transition-colors placeholder:text-neutral-400 focus:border-red-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-red-500/20"
-                                                    />
-                                                </div>
-                                                <div>
-                                                    <label
-                                                        htmlFor="contact-email-input"
-                                                        className="mb-1.5 block text-xs font-semibold text-neutral-700"
-                                                    >
-                                                        Email Address
-                                                    </label>
-                                                    <input
-                                                        id="contact-email-input"
-                                                        type="email"
-                                                        required
-                                                        value={contactEmail}
-                                                        onChange={(event) => setContactEmail(event.target.value)}
-                                                        placeholder="sipho@company.co.za"
-                                                        title="Enter your email address"
-                                                        className="w-full rounded-xl border border-neutral-300 bg-neutral-50 px-4 py-3 text-sm text-neutral-900 transition-colors placeholder:text-neutral-400 focus:border-red-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-red-500/20"
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <label
-                                                    htmlFor="contact-service-select"
-                                                    className="mb-1.5 block text-xs font-semibold text-neutral-700"
-                                                >
-                                                    Service of Interest
-                                                </label>
-                                                <select
-                                                    id="contact-service-select"
-                                                    required
-                                                    value={contactSelectedService}
-                                                    onChange={(event) => setContactSelectedService(event.target.value)}
-                                                    title="Select the safety service or training you require"
-                                                    className="w-full rounded-xl border border-neutral-300 bg-neutral-50 px-4 py-3 text-sm text-neutral-900 transition-colors focus:border-red-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-red-500/20"
-                                                >
-                                                    <option
-                                                        value=""
-                                                        disabled
-                                                    >
-                                                        Select a service...
-                                                    </option>
-                                                    {
-                                                        contactServiceOptions.map((serviceOption, optionIndex) => (
-                                                            <option
-                                                                key={`contact-service-${optionIndex}`}
-                                                                value={serviceOption}
-                                                            >
-                                                                {serviceOption}
-                                                            </option>
-                                                        ))
-                                                    }
-                                                </select>
-                                            </div>
-                                            <div>
-                                                <label
-                                                    htmlFor="contact-message-input"
-                                                    className="mb-1.5 block text-xs font-semibold text-neutral-700"
-                                                >
-                                                    Message / Project Details
-                                                </label>
-                                                <textarea
-                                                    id="contact-message-input"
-                                                    rows={4}
-                                                    required
-                                                    value={contactMessage}
-                                                    onChange={(event) => setContactMessage(event.target.value)}
-                                                    placeholder="Tell us about your team size, site location, or compliance timeline..."
-                                                    title="Enter your message or inquiry"
-                                                    className="w-full resize-none rounded-xl border border-neutral-300 bg-neutral-50 px-4 py-3 text-sm text-neutral-900 transition-colors placeholder:text-neutral-400 focus:border-red-500 focus:bg-white focus:outline-none focus:ring-2 focus:ring-red-500/20"
-                                                />
-                                            </div>
-                                            <button
-                                                type="submit"
-                                                title="Submit your inquiry to Redseal Safety Authority"
-                                                className="mt-2 flex w-full items-center justify-center gap-2 rounded-xl bg-red-600 px-6 py-3.5 text-center text-sm font-semibold text-white shadow-md shadow-red-600/25 transition-all duration-300 hover:bg-red-700 hover:shadow-red-600/40 active:scale-95 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:w-auto"
-                                            >
-                                                <span>Send Message</span>
-                                                <Send className="h-4 w-4" />
-                                            </button>
-                                        </div>
-                                    )
-                                }
-                            </form>
+                            <ContactForm />
                         </div>
                         <div className="flex flex-col lg:col-span-5">
                             <div className="relative flex h-full min-h-[400px] w-full flex-col overflow-hidden rounded-3xl border border-neutral-200/80 bg-neutral-100 shadow-md">
                                 <iframe
-                                    src="https://maps.google.com/maps?q=1+Mottramdale+Road,+Westwood,+Westville,+3629&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                                    src={redsealContactDetails.mapEmbed}
                                     title="Google Map location of Redseal Safety Authority Headquarters in Westville, South Africa"
                                     className="h-full min-h-[380px] w-full flex-1 border-0"
                                     loading="lazy"
@@ -2329,7 +2317,7 @@ function Home() {
                                 <div className="border-t border-neutral-200 bg-white p-4">
                                     <div className="flex items-center gap-2 text-xs font-semibold text-neutral-800">
                                         <MapPin className="h-4 w-4 text-red-600" />
-                                        <span>Redseal Safety Authority HQ • 1 Mottramdale Rd, Westville</span>
+                                        <span>{redsealContactDetails.address}</span>
                                     </div>
                                 </div>
                             </div>
@@ -2349,7 +2337,10 @@ function Home() {
         return (
             <section className="w-full bg-white pb-16 sm:pb-24">
                 <div className="mx-auto w-full px-3 min-[360px]:px-4 sm:px-6 lg:px-8">
-                    <div className="relative overflow-hidden rounded-3xl bg-neutral-950 px-6 py-12 text-white shadow-2xl sm:px-12 sm:py-16 lg:px-16 lg:py-20">
+                    <div
+                        data-home-reveal=""
+                        className="relative overflow-hidden rounded-3xl bg-neutral-950 px-6 py-12 text-white shadow-2xl sm:px-12 sm:py-16 lg:px-16 lg:py-20"
+                    >
                         <div className="pointer-events-none absolute -top-24 -right-24 h-96 w-96 rounded-full bg-red-600/20 blur-3xl" />
                         <div className="pointer-events-none absolute -bottom-24 -left-24 h-96 w-96 rounded-full bg-red-800/15 blur-3xl" />
                         <div className="relative z-10 mx-auto max-w-4xl text-center">
@@ -2365,7 +2356,7 @@ function Home() {
                             </p>
                             <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-5">
                                 <a
-                                    href="#bookings"
+                                    href="/contact"
                                     title="Book an appointment for accredited safety training"
                                     className="flex w-full items-center justify-center gap-2 rounded-full bg-red-600 px-8 py-4 text-center text-sm font-semibold text-white shadow-lg shadow-red-600/30 transition-all duration-300 hover:bg-red-700 hover:shadow-red-600/50 active:scale-95 sm:w-auto min-[360px]:text-base"
                                 >
@@ -2373,7 +2364,7 @@ function Home() {
                                     <span>Book an Appointment</span>
                                 </a>
                                 <a
-                                    href="contact"
+                                    href="/contact"
                                     title="Contact Redseal safety consultants and advisors"
                                     className="flex w-full items-center justify-center gap-2 rounded-full border border-white/20 bg-white/5 px-8 py-4 text-center text-sm font-semibold text-white backdrop-blur-xs transition-all duration-300 hover:border-white/40 hover:bg-white/10 active:scale-95 sm:w-auto min-[360px]:text-base"
                                 >
@@ -2391,7 +2382,10 @@ function Home() {
     return (
         <div className="flex min-h-screen flex-col bg-white">
             <TopNavigation />
-            <main className="flex-1 overflow-x-hidden">
+            <main
+                ref={mainReference}
+                className="flex-1 overflow-x-hidden"
+            >
                 {renderHero()}
                 {renderStatisticsAndIntro()}
                 {renderAbout()}
@@ -2404,6 +2398,8 @@ function Home() {
                 {renderHomeCTA()}
             </main>
             <Footer />
+            <WhatsAppFloatingWidget raised={isPastHero} />
+            <ScrollToTopFloatingWidget isVisible={isPastHero} />
         </div>
     );
 }
